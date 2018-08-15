@@ -2,35 +2,41 @@ public class CurrenciesExchangeRate {
 
 
 
-    public CurrenciesExchangeRate() {
-    }
-
-
-    public void setFirstCurrency(String firstCurrency) {
+    public CurrenciesExchangeRate(Currencies firstCurrency, Currencies secondCurrency, double exchangeRate) {
         this.firstCurrency = firstCurrency;
-    }
-
-    public void setSecondCurrency(String secondCurrency) {
         this.secondCurrency = secondCurrency;
-    }
-
-    public void setExchangeRate(double exchangeRate) {
         this.exchangeRate = exchangeRate;
     }
 
-    public String getFirstCurrency() {
-        return firstCurrency;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CurrenciesExchangeRate that = (CurrenciesExchangeRate) o;
+
+        if (Double.compare(that.exchangeRate, exchangeRate) != 0) return false;
+        if (!firstCurrency.equals(that.firstCurrency)) return false;
+        return secondCurrency.equals(that.secondCurrency);
     }
 
-    public String getSecondCurrency() {
-        return secondCurrency;
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = firstCurrency.hashCode();
+        result = 31 * result + secondCurrency.hashCode();
+        temp = Double.doubleToLongBits(exchangeRate);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 
-    public double getExchangeRate() {
-        return exchangeRate;
+    @Override
+    public String toString(){
+        return firstCurrency + "_"+ secondCurrency+" "+exchangeRate;
     }
 
-    private String firstCurrency;
-    private String secondCurrency;
+    private Currencies firstCurrency;
+    private Currencies secondCurrency;
     private double exchangeRate;
 }
