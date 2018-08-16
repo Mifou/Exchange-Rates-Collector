@@ -31,7 +31,7 @@ public class ClientGet {
             for (Currencies second : currenciesTable) {
 
 
-                if (second != first) {
+                if (!second.equals(first)) {
                     try {
                         URL url = new URL("https://free.currencyconverterapi.com/api/v6/convert?q=" + first + "_" + second + "&compact=ultra");
                         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
