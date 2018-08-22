@@ -1,7 +1,5 @@
 public class CurrenciesExchangeRate {
 
-
-
     public CurrenciesExchangeRate(Currencies firstCurrency, Currencies secondCurrency, double exchangeRate) {
         this.firstCurrency = firstCurrency;
         this.secondCurrency = secondCurrency;

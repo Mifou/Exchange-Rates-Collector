@@ -1,4 +1,6 @@
-import com.sun.org.apache.xpath.internal.SourceTree;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,8 +11,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientGet {
+public class CreateCRE implements Job {
 
+    private List<CurrenciesExchangeRate> currenciesExchangeRateList = new ArrayList<CurrenciesExchangeRate>();
 
     private static CurrenciesExchangeRate createCurrenciesExchangeRate(Currencies first, Currencies second, String output) {
         String split[] = output.split(":");
@@ -20,16 +23,22 @@ public class ClientGet {
 
     }
 
-    public static void main(String[] args) throws IOException {
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        try {
+            getClient();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (CurrenciesExchangeRate c : currenciesExchangeRateList) {
+            System.out.println(c);
+        }
+    }
 
-
+    private void getClient() throws IOException {
         Currencies currenciesTable[] = Currencies.values();
-        List<CurrenciesExchangeRate> currenciesExchangeRateList = new ArrayList<>();
-
 
         for (Currencies first : currenciesTable) {
             for (Currencies second : currenciesTable) {
-
 
                 if (!second.equals(first)) {
                     try {
@@ -53,10 +62,6 @@ public class ClientGet {
                     }
                 }
             }
-        }
-        //Printing the result
-        for (CurrenciesExchangeRate c : currenciesExchangeRateList) {
-            System.out.println(c);
         }
     }
 }
