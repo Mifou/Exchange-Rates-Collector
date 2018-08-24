@@ -11,7 +11,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateCRE implements Job {
+public class CREResultsRetriever implements Job {
 
     private List<CurrenciesExchangeRate> currenciesExchangeRateList = new ArrayList<CurrenciesExchangeRate>();
 
@@ -25,7 +25,7 @@ public class CreateCRE implements Job {
 
     public void execute(JobExecutionContext context) throws JobExecutionException {
         try {
-            getClient();
+            prepareCREResults();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -34,7 +34,7 @@ public class CreateCRE implements Job {
         }
     }
 
-    private void getClient() throws IOException {
+    private void prepareCREResults() throws IOException {
         Currencies currenciesTable[] = Currencies.values();
 
         for (Currencies first : currenciesTable) {

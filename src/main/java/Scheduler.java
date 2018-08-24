@@ -6,7 +6,7 @@ public class Scheduler {
 
     public static void main(String[] args) throws IOException, SchedulerException {
 
-        JobDetail job = JobBuilder.newJob(CreateCRE.class).build();
+        JobDetail job = JobBuilder.newJob(CREResultsRetriever.class).build();
 
         Trigger trigger = TriggerBuilder.newTrigger().withIdentity("getTrigger").withSchedule(SimpleScheduleBuilder
                 .simpleSchedule().withIntervalInHours(24).repeatForever()).build();
@@ -14,8 +14,9 @@ public class Scheduler {
 
         org.quartz.Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
 
-        scheduler.start();
         scheduler.scheduleJob(job, trigger);
+        scheduler.start();
+
     }
 }
 
