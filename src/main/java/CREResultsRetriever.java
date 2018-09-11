@@ -3,17 +3,22 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Formatter;
 import java.util.List;
 
 public class CREResultsRetriever implements Job {
 
     private List<CurrenciesExchangeRate> currenciesExchangeRateList = new ArrayList<CurrenciesExchangeRate>();
+    private Formatter x;
+
 
     private static CurrenciesExchangeRate createCurrenciesExchangeRate(Currencies first, Currencies second, String output) {
         String split[] = output.split(":");
@@ -32,6 +37,7 @@ public class CREResultsRetriever implements Job {
         for (CurrenciesExchangeRate c : currenciesExchangeRateList) {
             System.out.println(c);
         }
+
     }
 
     private void prepareCREResults() throws IOException {
@@ -63,5 +69,33 @@ public class CREResultsRetriever implements Job {
                 }
             }
         }
+        openFile();
+        addResultsToFile();
+        closeFile();
     }
+
+    private void openFile() {
+        Date date = new Date();
+        String stringDate = date.toString().replaceAll(":", "-");
+        try {
+            System.out.println("Cr" + stringDate + ".txt");
+            x = new Formatter("dates"+ File.separator+stringDate + "-Currencies Rate.txt");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Cannot open file");
+        }
+    }
+
+    private void addResultsToFile() {
+        for (CurrenciesExchangeRate c : currenciesExchangeRateList) {
+            String s = c + "\n";
+            x.format("%s", s) ;
+        }
+        
+    }
+
+    private void closeFile() {
+        x.close();
+    }
+
 }

@@ -30,8 +30,8 @@ public class CurrenciesExchangeRate {
     }
 
     @Override
-    public String toString(){
-        return firstCurrency + "_"+ secondCurrency+" "+exchangeRate;
+    public String toString() {
+        return firstCurrency + "_" + secondCurrency + " " + exchangeRate;
     }
 
     private Currencies firstCurrency;
