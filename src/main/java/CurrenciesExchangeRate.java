@@ -31,7 +31,7 @@ public class CurrenciesExchangeRate {
 
     @Override
     public String toString() {
-        return firstCurrency + "_" + secondCurrency + " " + exchangeRate;
+        return firstCurrency + "_" + secondCurrency + " " + exchangeRate + System.lineSeparator();
     }
 
     private Currencies firstCurrency;
