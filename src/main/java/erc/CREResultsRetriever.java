@@ -1,34 +1,47 @@
+package erc;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CREResultsRetriever implements Job {
 
     private List<CurrenciesExchangeRate> currenciesExchangeRateList = new ArrayList<CurrenciesExchangeRate>();
+    private static final Logger LOGGER = LogManager.getLogger(CREResultsRetriever.class.getName());
 
     private static CurrenciesExchangeRate createCurrenciesExchangeRate(Currencies first, Currencies second, String output) {
         String split[] = output.split(":");
         String exchangeValueString = split[1].replace("}", "");
         double exchangeValue = Double.parseDouble(exchangeValueString);
-        return new CurrenciesExchangeRate(first, second, exchangeValue);
+        CurrenciesExchangeRate cer = new CurrenciesExchangeRate(first, second, exchangeValue);
+        LOGGER.debug(cer);
+        return cer;
     }
 
     public void execute(JobExecutionContext context) throws JobExecutionException {
+        LocalDateTime startTime = LocalDateTime.now();
+        LOGGER.debug("Currencies rate process start at: " + startTime);
         try {
             prepareCREResults();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        for (CurrenciesExchangeRate c : currenciesExchangeRateList) {
-            System.out.println(c);
-        }
+        LocalDateTime endTime = LocalDateTime.now();
+        LOGGER.debug("Currencies rate process end at:" + endTime);
+        Duration timeBetween = Duration.between(startTime,endTime);
+        LOGGER.debug("Process time:" + timeBetween.toMillis() + "ms");
 
     }
 
@@ -63,13 +76,13 @@ public class CREResultsRetriever implements Job {
         }
 
         LocalDate localDate = LocalDate.now();
-        File currencies = new File("dates"+ File.separator+localDate + "-Currencies Rate.txt");
+        File currencies = new File("dates" + File.separator + localDate + "-erc.Currencies Rate.txt");
         addResultsToFile(currencies);
     }
 
     private void addResultsToFile(File file) throws IOException {
         FileWriter fileWriter = new FileWriter(file);
-        for (CurrenciesExchangeRate c : currenciesExchangeRateList){
+        for (CurrenciesExchangeRate c : currenciesExchangeRateList) {
             fileWriter.write(c.toString());
         }
         currenciesExchangeRateList.clear();

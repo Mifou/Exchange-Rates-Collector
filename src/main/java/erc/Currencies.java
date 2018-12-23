@@ -1,4 +1,4 @@
-
+package erc;
 
 public enum Currencies {
 

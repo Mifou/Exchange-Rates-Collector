@@ -1,3 +1,5 @@
+package erc;
+
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
@@ -6,7 +8,6 @@ import java.io.IOException;
 public class Scheduler {
 
     public static void main(String[] args) throws IOException, SchedulerException {
-
 
         JobDetail job = JobBuilder.newJob(CREResultsRetriever.class).build();
 

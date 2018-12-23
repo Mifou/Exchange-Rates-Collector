@@ -1,3 +1,5 @@
+package erc;
+
 public class CurrenciesExchangeRate {
 
     public CurrenciesExchangeRate(Currencies firstCurrency, Currencies secondCurrency, double exchangeRate) {
